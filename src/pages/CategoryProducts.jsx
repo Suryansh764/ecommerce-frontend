@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function CategoryProductsPage() {
   const { categoryId } = useParams();
-  const { data, loading, error } = useFetch("http://localhost:3000/api/products");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-nu-five.vercel.app/api/products");
 
   const products = data?.data?.products.filter(
     (product) => product.category?._id === categoryId

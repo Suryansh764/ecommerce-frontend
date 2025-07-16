@@ -13,7 +13,7 @@ import saleImg from "../assets/sale.jpg";
 import exclusiveImg from "../assets/exclusive.jpg";
 
 export default function HomePageComponents({ searchQuery = "" }) {
-  const { data, loading, error } = useFetch("http://localhost:3000/api/categories");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-nu-five.vercel.app/api/categories");
  const categoryArray = data || [];
 
   const [showAll, setShowAll] = useState(false);

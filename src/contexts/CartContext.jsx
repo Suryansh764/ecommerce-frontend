@@ -14,7 +14,7 @@ export function CartProvider({ children }) {
 
   const fetchCart = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/cart/${STATIC_USER_ID}`);
+      const res = await fetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
       const data = await res.json();
       setCart(data.data?.items || []);
     } catch (err) {

@@ -5,7 +5,7 @@ import useFetch from "../useFetch";
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
 
 export default function CartPage() {
-  const { data, loading, error } = useFetch(`http://localhost:3000/api/cart/${STATIC_USER_ID}`);
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
   const cartItems = data?.data?.items || [];
 
   const [items, setItems] = useState([]);
@@ -28,7 +28,7 @@ export default function CartPage() {
     if (quantity <= 0) return removeItem(productId);
     if (quantity > product.stock) return alert("🚫 Not enough stock available!");
 
-    const res = await fetch("http://localhost:3000/api/cart/update", {
+    const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity }),
@@ -44,7 +44,7 @@ export default function CartPage() {
   };
 
   const removeItem = async (productId) => {
-    const res = await fetch("http://localhost:3000/api/cart/remove", {
+    const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/remove", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: STATIC_USER_ID, productId }),
