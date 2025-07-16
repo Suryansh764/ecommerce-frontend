@@ -14,8 +14,8 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [minStock, setMinStock] = useState(0);
-  const [priceSort, setPriceSort] = useState(""); // price sort
-  const [alphaSort, setAlphaSort] = useState(""); // alphabetical sort
+  const [priceSort, setPriceSort] = useState(""); 
+  const [alphaSort, setAlphaSort] = useState(""); 
   const [showAllFilters, setShowAllFilters] = useState(false);
 
   const allCategories = [...new Set(products.map((p) => p.category?.name || "Uncategorized"))];
@@ -55,6 +55,8 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
 
   return (
     <div className="container py-5">
+      <h2 className="mb-4 display-5">All Products</h2>
+      <hr />
       <div className="row gx-5">
        
         <aside className="col-lg-3 mb-4">

@@ -18,17 +18,17 @@ export default function Profile() {
       </div>
     );
 
-    const { wishlist } = useWishlist(); // global live wishlist
+    const { wishlist } = useWishlist(); 
 
 
   return (
     <div className="container py-5">
-      {/* Profile Card */}
-     {/* Profile Card with Embedded Stats */}
-{/* Profile Card with Right-Aligned Stats */}
+      <h2 className="mb-4 display-5">Your Profile</h2>
+      <hr />
+      
 <div className="p-4 rounded-4 shadow-lg mb-5 bg-white border">
   <div className="row align-items-center">
-    {/* Left: Image + Details */}
+
     <div className="col-md-8 d-flex gap-4 align-items-center">
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCTsAgU63zASkq9kuDF7JKf4C2HjkqETuHUw&s"

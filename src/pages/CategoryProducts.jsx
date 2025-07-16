@@ -1,19 +1,37 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useFetch from "../useFetch";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function CategoryProductsPage() {
   const { categoryId } = useParams();
   const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/products?category=${categoryId}`);
+  const products = data?.data?.products || [];
 
-const products = data?.data?.products || [];
-  
+  const [minStock, setMinStock] = useState(0);
+  const [priceSort, setPriceSort] = useState("");
+  const [alphaSort, setAlphaSort] = useState("");
+
+  const maxStock = Math.max(...products.map((p) => p.stock || 0), 0);
+
+  const clearFilters = () => {
+    setMinStock(0);
+    setPriceSort("");
+    setAlphaSort("");
+  };
+
+  const filteredProducts = products.filter((product) => product.stock >= minStock);
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (alphaSort === "az") return a.title.localeCompare(b.title);
+    if (alphaSort === "za") return b.title.localeCompare(a.title);
+    if (priceSort === "asc") return a.price - b.price;
+    if (priceSort === "desc") return b.price - a.price;
+    return 0;
+  });
 
   if (loading) return <div className="text-center py-5 fs-4">Loading products...</div>;
   if (error) return <div className="text-danger text-center py-5 fs-4">Error loading products: {error}</div>;
-
-  if (!products || products.length === 0)
-    return <div className="text-center py-5 fs-4">No products found for this category.</div>;
+  if (!products || products.length === 0) return <div className="text-center py-5 fs-4">No products found for this category.</div>;
 
   return (
     <div className="container py-5">
@@ -24,8 +42,54 @@ const products = data?.data?.products || [];
       </div>
       <h2 className="mb-4 fw-bold text-center display-5">Products in this Category</h2>
 
+      <div className="mb-4 row g-3">
+        <div className="col-md-6">
+          <label className="form-label fw-semibold">💰 Sort by Price</label>
+          <select
+            className="form-select"
+            value={priceSort}
+            onChange={(e) => setPriceSort(e.target.value)}
+          >
+            <option value="">Default</option>
+            <option value="asc">Low to High</option>
+            <option value="desc">High to Low</option>
+          </select>
+        </div>
+
+        <div className="col-md-6">
+          <label className="form-label fw-semibold">🔤 Sort Alphabetically</label>
+          <select
+            className="form-select"
+            value={alphaSort}
+            onChange={(e) => setAlphaSort(e.target.value)}
+          >
+            <option value="">Default</option>
+            <option value="az">A to Z</option>
+            <option value="za">Z to A</option>
+          </select>
+        </div>
+
+        <div className="col-12">
+          <label className="form-label fw-semibold">📦 Minimum Stock: {minStock}</label>
+          <input
+            type="range"
+            className="form-range"
+            min={0}
+            max={maxStock}
+            value={minStock}
+            onChange={(e) => setMinStock(Number(e.target.value))}
+          />
+        </div>
+
+        <div className="col-12 text-end">
+          <button className="btn btn-sm btn-outline-danger" onClick={clearFilters} disabled={minStock === 0 && priceSort === "" && alphaSort === ""}>
+            Clear Filters
+          </button>
+        </div>
+      </div>
+
       <div className="row g-4">
-        {products.map((product) => (
+        {sortedProducts.map((product) => (
           <div key={product._id} className="col-md-4">
             <div
               className="card h-100 shadow border-0 transition-hover"

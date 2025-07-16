@@ -1,4 +1,4 @@
-// /contexts/CartContext.js
+
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
@@ -28,7 +28,7 @@ export function CartProvider({ children }) {
 
 const addToCart = async (productId, quantity = 1, override = false) => {
   try {
-    // If not overriding, add to existing quantity
+
     if (!override) {
       const existingItem = cart.find((item) => item.product._id === productId);
       quantity = existingItem ? existingItem.quantity + quantity : quantity;
@@ -41,7 +41,7 @@ const addToCart = async (productId, quantity = 1, override = false) => {
     });
 
     if (res.ok) {
-      fetchCart(); // ✅ Refresh live cart state after update
+      fetchCart(); 
     }
   } catch (err) {
     console.error("Add to cart failed", err);

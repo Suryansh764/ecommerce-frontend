@@ -37,7 +37,10 @@ const filteredCategories = categoryArray.filter((category) => {
   return (
     <>
       <div className="container-fluid my-4 px-5">
+        <h2 className="mb-4 display-2">Available Categories</h2>
+      <hr />
         <section>
+
           {loading && <p>Loading...</p>}
           {error && <p>Error loading blogs.</p>}
           {!loading && filteredCategories.length === 0 && (
@@ -126,7 +129,7 @@ const filteredCategories = categoryArray.filter((category) => {
         </section>
         <section className="my-5 px-5">
   <div className="row gx-4 gy-4">
-    {/* Exclusive Paintings */}
+
     <div className="col-md-6">
       <Link to="/exclusive" className="text-decoration-none">
         <div

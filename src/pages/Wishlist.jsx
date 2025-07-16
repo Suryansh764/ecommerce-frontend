@@ -8,7 +8,7 @@ export default function WishlistPage() {
   const { addToCart, cart } = useCart();
   const [alert, setAlert] = useState(null);
 
-  // Auto-dismiss alert
+  
   useEffect(() => {
     if (alert) {
       const timeout = setTimeout(() => setAlert(null), 3000);
@@ -21,10 +21,10 @@ export default function WishlistPage() {
 
   return (
     <div className="container py-5">
-      <h2 className="mb-4">Your Wishlist</h2>
+      <h2 className="mb-4 display-5">Your Wishlist</h2>
       <hr />
 
-      {/* Alert Box */}
+     
       {alert && (
         <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3`} role="alert">
           {alert.message}
@@ -34,7 +34,7 @@ export default function WishlistPage() {
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {wishlist.map((product) => (
           <div className="col" key={product._id}>
-            <div className="card h-100 shadow-sm border-0">
+            <div className="card h-100 shadow-lg border-0">
               <Link to={`/products/${product._id}`}>
                 <img
                   src={product.image}

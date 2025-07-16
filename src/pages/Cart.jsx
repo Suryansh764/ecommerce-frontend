@@ -34,10 +34,10 @@ export default function CartPage() {
 
   return (
     <div className="container py-5">
-      <h2 className="mb-4">Your Cart</h2>
+      <h2 className="mb-4 display-5">Your Cart</h2>
       <hr />
 
-      {/* Alert */}
+
       {alert && (
         <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3`} role="alert">
           {alert.message}

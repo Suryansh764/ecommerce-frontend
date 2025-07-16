@@ -1,8 +1,8 @@
-// useFetch.js
+
 import { useEffect, useState } from "react";
 
 export default function useFetch(url) {
-  const [data, setData] = useState(null); // default should NOT be undefined
+  const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -10,10 +10,10 @@ export default function useFetch(url) {
     fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
-        return res.json(); // <-- Important: parse JSON
+        return res.json(); 
       })
       .then((data) => {
-        setData(data); // should be an array like [{ name: "Art", ... }]
+        setData(data);
         setLoading(false);
       })
       .catch((err) => {

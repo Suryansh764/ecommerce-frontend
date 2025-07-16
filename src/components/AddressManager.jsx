@@ -64,7 +64,7 @@ export default function AddressManager({ userId }) {
     <div className="mb-4">
       <h5 className="fw-semibold mb-3">Shipping Address</h5>
 
-      {/* Dropdown selector */}
+
       {addresses.length > 0 && (
         <div className="mb-3">
           <select
@@ -79,7 +79,7 @@ export default function AddressManager({ userId }) {
             ))}
           </select>
 
-          {/* Show full address */}
+
           {selectedAddress && (
             <div className="card mt-3 p-3 shadow-sm border rounded">
               <p className="mb-1 fw-semibold">{selectedAddress.street}</p>
@@ -93,7 +93,7 @@ export default function AddressManager({ userId }) {
         </div>
       )}
 
-      {/* Add new address form */}
+
       <h6 className="fw-bold mt-4">Add New Address</h6>
       <div className="row g-2">
         <div className="col-md-6">

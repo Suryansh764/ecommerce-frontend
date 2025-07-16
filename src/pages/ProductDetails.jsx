@@ -16,7 +16,7 @@ export default function ProductDetails() {
   const product = data?.data?.products.find((p) => p._id === id);
   const isWishlisted = wishlist.some((item) => item._id === product?._id);
 
-  // Auto-dismiss alert after 3 seconds
+
   useEffect(() => {
     if (alert) {
       const timeout = setTimeout(() => setAlert(null), 3000);
@@ -51,7 +51,7 @@ export default function ProductDetails() {
         </Link>
       </div>
 
-      {/* 🔔 Alert Message */}
+
       {alert && (
         <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3 shadow-sm`} role="alert">
           {alert.message}
@@ -59,7 +59,7 @@ export default function ProductDetails() {
       )}
 
       <div className="d-flex flex-column align-items-center">
-        {/* Product Image */}
+
         <div
           className="mb-5 rounded position-relative"
           style={{
@@ -90,7 +90,7 @@ export default function ProductDetails() {
           />
         </div>
 
-        {/* Product Info */}
+
         <div className="text-center w-100" style={{ maxWidth: "1000px" }}>
           <h2 className="fw-bold mb-3 display-4">{product.title}</h2>
           <p className="text-muted mb-2 fs-5">by <strong>{product.artist}</strong></p>
@@ -118,7 +118,7 @@ export default function ProductDetails() {
             </p>
           </div>
 
-          {/* Action Buttons */}
+
           <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             <button
               className="btn btn-lg btn-primary px-4 shadow d-flex align-items-center gap-2 fs-5"
