@@ -35,13 +35,17 @@ export default function CartPage() {
     });
 
     if (res.ok) {
-      const updated = items.map((item) =>
-        item.product._id === productId ? { ...item, quantity } : item
-      );
-      setItems(updated);
-      calculateTotal(updated);
-    }
-  };
+    // ✅ Re-fetch cart data from backend to get fully populated product details
+    const refreshed = await fetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
+    const json = await refreshed.json();
+    const newItems = json?.data?.items || [];
+
+    setItems(newItems);
+    calculateTotal(newItems);
+  } else {
+    alert("Failed to update quantity. Please try again.");
+  }
+};
 
   const removeItem = async (productId) => {
     const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/remove", {
