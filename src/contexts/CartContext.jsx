@@ -8,13 +8,14 @@ export function useCart() {
 }
 
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
+const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app"; // ✅ use this consistently
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
   const fetchCart = async () => {
     try {
-      const res = await fetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
+      const res = await fetch(`${BACKEND_URL}/api/cart/${STATIC_USER_ID}`);
       const data = await res.json();
       setCart(data.data?.items || []);
     } catch (err) {
@@ -26,33 +27,31 @@ export function CartProvider({ children }) {
     fetchCart();
   }, []);
 
- const addToCart = async (productId, quantity = 1) => {
-  try {
-    // Get the existing item (if any)
-    const existingItem = cart.find((item) => item.product._id === productId);
-    const newQuantity = existingItem ? existingItem.quantity + quantity : quantity;
+  const addToCart = async (productId, quantity = 1) => {
+    try {
+      const existingItem = cart.find((item) => item.product._id === productId);
+      const newQuantity = existingItem ? existingItem.quantity + quantity : quantity;
 
-    const res = await fetch("http://localhost:3000/api/cart/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity: newQuantity }),
-    });
+      const res = await fetch(`${BACKEND_URL}/api/cart/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity: newQuantity }),
+      });
 
-    const data = await res.json();
-    if (res.ok) {
-      setCart(data.cart.items);
-    } else {
-      console.error("Add to cart error:", data.message);
+      const data = await res.json();
+      if (res.ok) {
+        setCart(data.cart.items);
+      } else {
+        console.error("Add to cart error:", data.message);
+      }
+    } catch (err) {
+      console.error("Add to cart failed", err);
     }
-  } catch (err) {
-    console.error("Add to cart failed", err);
-  }
-};
-
+  };
 
   const removeFromCart = async (productId) => {
     try {
-      const res = await fetch("http://localhost:3000/api/cart/remove", {
+      const res = await fetch(`${BACKEND_URL}/api/cart/remove`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: STATIC_USER_ID, productId }),
