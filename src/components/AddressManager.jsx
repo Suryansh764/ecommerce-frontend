@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://localhost:3000"; // Replace with your backend URL
+const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app";
 export default function AddressManager({ userId }) {
   const [addresses, setAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState("");
 
   const fetchAddresses = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/users/${userId}/addresses`);
+      const res = await fetch(`${BACKEND_URL}/api/users/686e703ba1875a9c9aa508c6`);
       const data = await res.json();
       setAddresses(data?.data?.user?.addresses || []);
     } catch (err) {
