@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 
 export default function CategoryProductsPage() {
   const { categoryId } = useParams();
-  const { data, loading, error } = useFetch("https://ecommerce-backend-nu-five.vercel.app/api/products");
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/products?category=${categoryId}`);
 
-  const products = data?.data?.products.filter(
-    (product) => product.category?._id === categoryId
-  );
+const products = data?.data?.products || [];
+  
 
   if (loading) return <div className="text-center py-5 fs-4">Loading products...</div>;
   if (error) return <div className="text-danger text-center py-5 fs-4">Error loading products: {error}</div>;
