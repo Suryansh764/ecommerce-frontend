@@ -85,7 +85,7 @@ const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
               <li className="nav-item position-relative">
                 <Link className="nav-link text-light fs-5" to="/saved">
                   <i className="bi bi-heart-fill"></i>
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-danger">
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-primary">
                     {savedCount}
                   </span>
                 </Link>
@@ -94,7 +94,7 @@ const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   <Link className="nav-link text-light fs-5" to="/cart">
     <i className="bi bi-cart-fill"></i>
     {cart.length > 0 && (
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-danger">
+      <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-primary">
         {cartCount}
       </span>
     )}
