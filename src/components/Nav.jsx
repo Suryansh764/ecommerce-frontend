@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import useFetch from '../useFetch';
 import { useWishlist } from "../contexts/WishlistContext";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useCart } from "../contexts/CartContext";
 
 export default function Nav({ searchQuery, setSearchQuery }) {
   const { data } = useFetch("https://ecommerce-backend-nu-five.vercel.app/api/products");
@@ -9,6 +10,10 @@ export default function Nav({ searchQuery, setSearchQuery }) {
   const savedCount = wishlist.length; 
   const [isFocused, setIsFocused] = useState(false);
 
+  const { cart } = useCart();
+const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+   
   return (
     <nav className="navbar navbar-expand-lg py-5 px-5" style={{ backgroundColor: "#030303" }}>
       <div className="container-fluid px-4">
@@ -86,13 +91,15 @@ export default function Nav({ searchQuery, setSearchQuery }) {
                 </Link>
               </li>
               <li className="nav-item position-relative">
-                <Link className="nav-link text-light fs-5" to="/cart">
-                  <i className="bi bi-cart-fill"></i>
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-danger">
-                    {data?.length || 0}
-                  </span>
-                </Link>
-              </li>
+  <Link className="nav-link text-light fs-5" to="/cart">
+    <i className="bi bi-cart-fill"></i>
+    {cart.length > 0 && (
+      <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-danger">
+        {cartCount}
+      </span>
+    )}
+  </Link>
+</li>
             </ul>
           </div>
         </div>

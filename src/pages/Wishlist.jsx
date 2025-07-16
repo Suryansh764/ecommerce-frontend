@@ -1,10 +1,11 @@
 import { useWishlist } from "../contexts/WishlistContext";
-import { useCart } from "../contexts/CartContext"; // ✅ Import this
+import { useCart } from "../contexts/CartContext"; 
 import { Link } from "react-router-dom";
 
 export default function WishlistPage() {
   const { wishlist, removeFromWishlist } = useWishlist();
-  const { addToCart } = useCart(); // ✅ Use it
+ const { addToCart, cart } = useCart();
+
 
   if (wishlist.length === 0)
     return <div className="text-center py-5">No items in your wishlist.</div>;
@@ -31,12 +32,22 @@ export default function WishlistPage() {
                 <div className="mt-auto d-flex justify-content-between align-items-center flex-wrap gap-2">
                   <span className="fw-bold fs-5 text-success">${product.price}</span>
                   <div className="d-flex gap-2">
-                    <button
-                      className="btn btn-primary text-light"
-                      onClick={() => addToCart(product._id)} // ✅ Functional
-                    >
-                      Add to Cart
-                    </button>
+                   <button
+  className="btn btn-primary text-light"
+  onClick={async () => {
+    const alreadyInCart = cart.some(item => item.product._id === product._id);
+    if (alreadyInCart) {
+      alert("Product already exists in the cart.");
+    } else {
+      await addToCart(product._id);
+      alert(`${product.title} added to cart.`);
+    }
+  }}
+>
+  Add to Cart
+</button>
+
+
                     <button
                       className="btn btn-outline-danger"
                       onClick={() => removeFromWishlist(product._id)}

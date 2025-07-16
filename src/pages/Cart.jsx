@@ -1,78 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import useFetch from "../useFetch";
-
+import { useCart } from "../contexts/CartContext"; // ✅ use global cart
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
-
+import AddressManager from "../components/AddressManager"; 
 export default function CartPage() {
-  const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
-  const cartItems = data?.data?.items || [];
+  const { cart, removeFromCart, addToCart } = useCart(); // ✅ hook from context
+  const items = cart;
+  const total = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
 
-  const [items, setItems] = useState([]);
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    if (cartItems.length) {
-      setItems(cartItems);
-      calculateTotal(cartItems);
-    }
-  }, [cartItems]);
-
-  const calculateTotal = (list) => {
-    const sum = list.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-    setTotal(sum);
-  };
-
-  const updateQuantity = async (productId, quantity) => {
-    const product = items.find((item) => item.product._id === productId)?.product;
-    if (quantity <= 0) return removeItem(productId);
-    if (quantity > product.stock) return alert("Not enough stock available!");
-
-    const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity }),
-    });
-
-    if (res.ok) {
-
-    const refreshed = await fetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
-    const json = await refreshed.json();
-    const newItems = json?.data?.items || [];
-
-    setItems(newItems);
-    calculateTotal(newItems);
-  } else {
-    alert("Failed to update quantity. Please try again.");
-  }
-};
-
-  const removeItem = async (productId) => {
-    const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/remove", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: STATIC_USER_ID, productId }),
-    });
-    if (res.ok) {
-      const updated = items.filter((item) => item.product._id !== productId);
-      setItems(updated);
-      calculateTotal(updated);
+  const updateQuantity = async (productId, quantity, stock) => {
+    if (quantity <= 0) {
+      await removeFromCart(productId); 
+    } else if (quantity > stock) {
+      alert("Not enough stock available!");
+    } else {
+      await addToCart(productId, quantity, true); 
+ 
     }
   };
 
-  if (loading) return <p className="text-center mt-4">Loading cart...</p>;
-  if (error) return <p className="text-center text-danger mt-4">Error fetching cart</p>;
   if (!items.length) return <p className="text-center mt-4">Your cart is empty.</p>;
+
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="container py-5">
-      <h2 className="text-center fw-bold mb-4">Your Cart</h2>
+      <h2 className="mb-4">Your Cart</h2>
+      <hr />
       <div className="row g-5">
-
-
         <div className="col-lg-8">
           {items.map(({ product, quantity }) => (
-            <div key={product._id} className="card mb-4 shadow-sm border-0 rounded-4">
+            <div key={product._id} className="card mb-4 shadow-lg border-2 rounded-4">
               <div className="row g-0">
                 <div className="col-md-4 d-flex align-items-stretch">
                   <Link to={`/products/${product._id}`} className="w-100">
@@ -95,7 +53,7 @@ export default function CartPage() {
                     <div className="d-flex align-items-center gap-3">
                       <button
                         className="btn btn-sm btn-outline-secondary"
-                        onClick={() => updateQuantity(product._id, quantity - 1)}
+                        onClick={() => updateQuantity(product._id, quantity - 1, product.stock)}
                         disabled={quantity <= 1}
                       >
                         -
@@ -103,13 +61,13 @@ export default function CartPage() {
                       <span className="fw-bold">{quantity}</span>
                       <button
                         className="btn btn-sm btn-outline-secondary"
-                        onClick={() => updateQuantity(product._id, quantity + 1)}
+                        onClick={() => updateQuantity(product._id, quantity + 1, product.stock)}
                       >
                         +
                       </button>
                       <button
                         className="btn btn-sm btn-outline-danger ms-auto"
-                        onClick={() => removeItem(product._id)}
+                        onClick={() => removeFromCart(product._id)}
                       >
                         Remove
                       </button>
@@ -121,16 +79,17 @@ export default function CartPage() {
           ))}
         </div>
 
-
         <div className="col-lg-4">
           <div className="card border-0 shadow sticky-top rounded-4 p-4" style={{ top: "80px" }}>
             <h4 className="mb-3 fw-semibold">Order Summary</h4>
+
+    <AddressManager userId={STATIC_USER_ID} />
             <p className="d-flex justify-content-between">
-              <span>Total Items:</span> <span>{items.length}</span>
+              <span>Total Items:</span> <span>{totalItems}</span>
+
             </p>
             <p className="d-flex justify-content-between fw-bold fs-5">
               <span>${total.toLocaleString()}</span>
-
             </p>
             <button className="btn btn-primary w-100 mt-3 py-2 fw-bold">
               Proceed to Checkout

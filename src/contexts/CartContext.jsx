@@ -1,14 +1,14 @@
-
+// /contexts/CartContext.js
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
+const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
+const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app";
 
 export function useCart() {
   return useContext(CartContext);
 }
 
-const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
-const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app"; 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
@@ -26,27 +26,27 @@ export function CartProvider({ children }) {
     fetchCart();
   }, []);
 
-  const addToCart = async (productId, quantity = 1) => {
-    try {
+const addToCart = async (productId, quantity = 1, override = false) => {
+  try {
+    // If not overriding, add to existing quantity
+    if (!override) {
       const existingItem = cart.find((item) => item.product._id === productId);
-      const newQuantity = existingItem ? existingItem.quantity + quantity : quantity;
-
-      const res = await fetch(`${BACKEND_URL}/api/cart/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity: newQuantity }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setCart(data.cart.items);
-      } else {
-        console.error("Add to cart error:", data.message);
-      }
-    } catch (err) {
-      console.error("Add to cart failed", err);
+      quantity = existingItem ? existingItem.quantity + quantity : quantity;
     }
-  };
+
+    const res = await fetch(`${BACKEND_URL}/api/cart/update`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: STATIC_USER_ID, productId, quantity }),
+    });
+
+    if (res.ok) {
+      fetchCart(); // ✅ Refresh live cart state after update
+    }
+  } catch (err) {
+    console.error("Add to cart failed", err);
+  }
+};
 
   const removeFromCart = async (productId) => {
     try {
@@ -55,10 +55,8 @@ export function CartProvider({ children }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: STATIC_USER_ID, productId }),
       });
-
-      const data = await res.json();
       if (res.ok) {
-        setCart(data.cart.items);
+        fetchCart(); 
       }
     } catch (err) {
       console.error("Remove from cart failed", err);
@@ -66,7 +64,7 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, fetchCart }}>
       {children}
     </CartContext.Provider>
   );
