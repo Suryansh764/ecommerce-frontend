@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const WishlistContext = createContext();
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://ecommerce-backend-nu-five.vercel.app/";
 
-const STATIC_USER_ID = "686e703ba1875a9c9aa508c6"; // Use real user ID dynamically in production
+const STATIC_USER_ID = "686e703ba1875a9c9aa508c6"; 
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);

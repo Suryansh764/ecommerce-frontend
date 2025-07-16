@@ -26,7 +26,7 @@ export default function CartPage() {
   const updateQuantity = async (productId, quantity) => {
     const product = items.find((item) => item.product._id === productId)?.product;
     if (quantity <= 0) return removeItem(productId);
-    if (quantity > product.stock) return alert("🚫 Not enough stock available!");
+    if (quantity > product.stock) return alert("Not enough stock available!");
 
     const res = await fetch("https://ecommerce-backend-nu-five.vercel.app/api/cart/update", {
       method: "POST",
@@ -35,7 +35,7 @@ export default function CartPage() {
     });
 
     if (res.ok) {
-    // ✅ Re-fetch cart data from backend to get fully populated product details
+
     const refreshed = await fetch(`https://ecommerce-backend-nu-five.vercel.app/api/cart/${STATIC_USER_ID}`);
     const json = await refreshed.json();
     const newItems = json?.data?.items || [];
@@ -66,10 +66,10 @@ export default function CartPage() {
 
   return (
     <div className="container py-5">
-      <h2 className="text-center fw-bold mb-4">🛍 Your Cart</h2>
+      <h2 className="text-center fw-bold mb-4">Your Cart</h2>
       <div className="row g-5">
 
-        {/* Cart Items */}
+
         <div className="col-lg-8">
           {items.map(({ product, quantity }) => (
             <div key={product._id} className="card mb-4 shadow-sm border-0 rounded-4">
@@ -121,7 +121,7 @@ export default function CartPage() {
           ))}
         </div>
 
-        {/* Summary */}
+
         <div className="col-lg-4">
           <div className="card border-0 shadow sticky-top rounded-4 p-4" style={{ top: "80px" }}>
             <h4 className="mb-3 fw-semibold">Order Summary</h4>

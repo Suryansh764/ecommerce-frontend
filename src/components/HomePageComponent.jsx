@@ -3,7 +3,7 @@ import { useState } from "react";
 import heroImage from "../assets/heroImage.jpg";
 import { Link } from "react-router-dom";
 
-// ✅ Category-specific images
+
 import abstractImg from "../assets/abstract.jpg";
 import landscapeImg from "../assets/landscape.jpg";
 import portraitImg from "../assets/portrait.jpg";
@@ -18,14 +18,14 @@ export default function HomePageComponents({ searchQuery = "" }) {
 
   const [showAll, setShowAll] = useState(false);
 
-  // ✅ Filter by search
+
 const filteredCategories = categoryArray.filter((category) => {
   const title = category.name || "";
   return title.toLowerCase().includes(searchQuery.trim().toLowerCase());
 });
 
 
-  // ✅ Mapping category name to image
+
   const categoryImages = {
     "Abstract Art": abstractImg,
     "Landscape & Nature Art": landscapeImg,
@@ -44,7 +44,7 @@ const filteredCategories = categoryArray.filter((category) => {
             <p>No blogs match your search.</p>
           )}
 
-          {/* ✅ Category Grid */}
+
           <div className="row gx-4 gy-4 px-3">
             {filteredCategories
               .slice(0, showAll ? filteredCategories.length : 4)
@@ -102,7 +102,7 @@ const filteredCategories = categoryArray.filter((category) => {
               })}
           </div>
 
-          {/* ✅ Toggle Button */}
+
           {filteredCategories.length > 4 && (
             <div className="text-center my-3">
               <button
@@ -115,7 +115,7 @@ const filteredCategories = categoryArray.filter((category) => {
           )}
         </section>
 
-        {/* ✅ Hero Section */}
+
         <section className="my-5">
           <img
             src={heroImage}
@@ -165,7 +165,7 @@ const filteredCategories = categoryArray.filter((category) => {
       </Link>
     </div>
 
-    {/* Sale on Paintings */}
+
     <div className="col-md-6">
       <Link to="/sale" className="text-decoration-none">
         <div

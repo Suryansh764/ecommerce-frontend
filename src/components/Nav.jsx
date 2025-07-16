@@ -36,7 +36,7 @@ export default function Nav({ searchQuery, setSearchQuery }) {
         <div className="collapse navbar-collapse mt-3 mt-lg-0" id="navbarNavDropdown">
           <div className="d-flex flex-column flex-lg-row align-items-center w-100 gap-3">
             
-            {/* Search Bar */}
+
             <form className="flex-grow-1 w-100" role="search">
               <input
                 className="form-control text-center"
@@ -62,7 +62,7 @@ export default function Nav({ searchQuery, setSearchQuery }) {
               />
             </form>
 
-            {/* Profile Button */}
+
             <Link
               to="/profile/686e703ba1875a9c9aa508c6"
               className="btn btn-light"
@@ -70,7 +70,7 @@ export default function Nav({ searchQuery, setSearchQuery }) {
               Profile
             </Link>
 
-            {/* Icon Links */}
+
             <ul className="navbar-nav d-flex flex-row align-items-center gap-3">
               <li className="nav-item">
                 <Link to="/products" className="nav-link text-light fs-5">

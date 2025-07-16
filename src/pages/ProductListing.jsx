@@ -56,12 +56,12 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
   return (
     <div className="container py-5">
       <div className="row gx-5">
-        {/* Filter Sidebar */}
+       
         <aside className="col-lg-3 mb-4">
   <div className="border rounded-4 shadow-sm p-4 bg-white sticky-top" style={{ top: "80px" }}>
     <h4 className="mb-4 text-center text-primary fw-semibold">🎯 Filter Products</h4>
 
-    {/* Categories */}
+    
     <div className="mb-4">
       <h6 className="text-dark fw-semibold mb-2">🗂 Categories</h6>
       {allCategories
@@ -82,10 +82,10 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
         ))}
     </div>
 
-    {/* Conditionally Show More Filters */}
+
     {showAllFilters && (
       <>
-        {/* Minimum Stock */}
+
         <div className="mb-4">
           <h6 className="text-dark fw-semibold mb-2">📦 Minimum Stock</h6>
           <input
@@ -99,7 +99,7 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
           <div className="small text-muted">Showing stock ≥ <strong>{minStock}</strong></div>
         </div>
 
-        {/* Price Sort */}
+
         <div className="mb-4">
           <h6 className="text-dark fw-semibold mb-2">💰 Sort by Price</h6>
           <div className="form-check mb-1">
@@ -140,7 +140,7 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
           </div>
         </div>
 
-        {/* Alphabetical Sort */}
+
         <div className="mb-4">
           <h6 className="text-dark fw-semibold mb-2">🔤 Sort Alphabetically</h6>
           <div className="form-check mb-1">
@@ -183,7 +183,7 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
       </>
     )}
 
-    {/* Actions */}
+
     <div className="d-flex flex-column gap-2 mt-4">
       <button
         className="btn btn-sm btn-outline-secondary"
@@ -208,7 +208,7 @@ const isWishlisted = (id) => wishlist.some((item) => item._id === id);
 </aside>
 
 
-        {/* Product Grid */}
+
         <section className="col-lg-9">
           <div className="row row-cols-1 row-cols-md-2 g-4">
             {sortedProducts.length > 0 ? (

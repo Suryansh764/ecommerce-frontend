@@ -21,16 +21,16 @@ export default function ProductDetails() {
   const handleWishlist = () => {
     if (isWishlisted) {
       removeFromWishlist(product._id);
-      alert("❤️ Removed from wishlist");
+      alert("Removed from wishlist");
     } else {
       addToWishlist(product);
-      alert("💖 Added to wishlist");
+      alert("Added to wishlist");
     }
   };
 
   const handleAddToCart = () => {
     addToCart(product._id, 1);
-    alert("🛒 Added to cart");
+    alert("Added to cart");
   };
 
   return (

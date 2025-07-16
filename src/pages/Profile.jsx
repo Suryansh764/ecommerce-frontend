@@ -45,7 +45,7 @@ export default function Profile() {
       </div>
     </div>
 
-    {/* Right: Orders + Wishlist */}
+
     <div className="col-md-4">
       <div className="d-flex flex-column align-items-end gap-3">
         <div className="bg-light border p-3 rounded-3 text-center" style={{ width: "100%", maxWidth: "220px" }}>
@@ -79,7 +79,7 @@ export default function Profile() {
 
       
 
-      {/* Addresses List */}
+     
       <div className="bg-white border rounded-4 shadow-sm p-4">
         <h4 className="mb-4 fw-semibold">Saved Addresses</h4>
 

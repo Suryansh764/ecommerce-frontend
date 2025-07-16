@@ -1,4 +1,4 @@
-// /contexts/CartContext.js
+
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
@@ -8,8 +8,7 @@ export function useCart() {
 }
 
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
-const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app"; // ✅ use this consistently
-
+const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app"; 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
