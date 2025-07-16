@@ -19,9 +19,15 @@ export default function AddressManager({ userId }) {
     if (!newAddress.trim()) return;
 
     const addressObj = {
-      user: userId,
-      address: newAddress.trim(),
-    };
+  user: userId,
+  street: newAddress.street,
+  city: newAddress.city,
+  state: newAddress.state,
+  postalCode: newAddress.postalCode,
+  country: newAddress.country,
+  phone: newAddress.phone,
+};
+
 
     try {
       await fetch(`${BACKEND_URL}/api/addresses`, {
@@ -44,13 +50,14 @@ export default function AddressManager({ userId }) {
     <div className="mb-4">
       <h5 className="fw-semibold">Shipping Address</h5>
       {addresses.length > 0 ? (
-        <ul className="list-group mb-2">
-          {addresses.map((addr) => (
-            <li key={addr._id} className="list-group-item small text-muted">
-              {addr.address}
-            </li>
-          ))}
-        </ul>
+       <ul className="list-group mb-2">
+  {addresses.map((addr) => (
+    <li key={addr._id} className="list-group-item small text-muted">
+      {addr.street}, {addr.city}, {addr.state}, {addr.postalCode}, {addr.country} <br />
+      📞 {addr.phone}
+    </li>
+  ))}
+</ul>
       ) : (
         <p className="text-muted small">No saved addresses yet.</p>
       )}
