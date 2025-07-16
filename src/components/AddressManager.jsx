@@ -1,41 +1,53 @@
 import { useEffect, useState } from "react";
 
 const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app";
+
 export default function AddressManager({ userId }) {
   const [addresses, setAddresses] = useState([]);
-  const [newAddress, setNewAddress] = useState("");
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [form, setForm] = useState({
+    street: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+    phone: ""
+  });
 
   const fetchAddresses = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/users/686e703ba1875a9c9aa508c6`);
+      const res = await fetch(`${BACKEND_URL}/api/users/${userId}`);
       const data = await res.json();
-      setAddresses(data?.data?.user?.addresses || []);
+      const fetchedAddresses = data?.data?.user?.addresses || [];
+      setAddresses(fetchedAddresses);
+      if (fetchedAddresses.length > 0 && !selectedAddressId) {
+        setSelectedAddressId(fetchedAddresses[0]._id);
+      }
     } catch (err) {
       console.error("Failed to fetch addresses", err);
     }
   };
 
   const handleAdd = async () => {
-    if (!newAddress.trim()) return;
+    const isFormValid = Object.values(form).every((val) => val.trim() !== "");
+    if (!isFormValid) return alert("Please fill in all address fields");
 
-    const addressObj = {
-  user: userId,
-  street: newAddress.street,
-  city: newAddress.city,
-  state: newAddress.state,
-  postalCode: newAddress.postalCode,
-  country: newAddress.country,
-  phone: newAddress.phone,
-};
-
+    const addressObj = { user: userId, ...form };
 
     try {
       await fetch(`${BACKEND_URL}/api/addresses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ addresses: [addressObj] }),
+        body: JSON.stringify({ addresses: [addressObj] })
       });
-      setNewAddress("");
+      setForm({
+        street: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        country: "",
+        phone: ""
+      });
       fetchAddresses();
     } catch (err) {
       console.error("Failed to add address", err);
@@ -46,33 +58,103 @@ export default function AddressManager({ userId }) {
     fetchAddresses();
   }, []);
 
+  const selectedAddress = addresses.find(addr => addr._id === selectedAddressId);
+
   return (
     <div className="mb-4">
-      <h5 className="fw-semibold">Shipping Address</h5>
-      {addresses.length > 0 ? (
-       <ul className="list-group mb-2">
-  {addresses.map((addr) => (
-    <li key={addr._id} className="list-group-item small text-muted">
-      {addr.street}, {addr.city}, {addr.state}, {addr.postalCode}, {addr.country} <br />
-      📞 {addr.phone}
-    </li>
-  ))}
-</ul>
-      ) : (
-        <p className="text-muted small">No saved addresses yet.</p>
+      <h5 className="fw-semibold mb-3">Shipping Address</h5>
+
+      {/* Dropdown selector */}
+      {addresses.length > 0 && (
+        <div className="mb-3">
+          <select
+            className="form-select"
+            value={selectedAddressId || ""}
+            onChange={(e) => setSelectedAddressId(e.target.value)}
+          >
+            {addresses.map((addr) => (
+              <option key={addr._id} value={addr._id}>
+                {addr.street}, {addr.city} ({addr.postalCode})
+              </option>
+            ))}
+          </select>
+
+          {/* Show full address */}
+          {selectedAddress && (
+            <div className="card mt-3 p-3 shadow-sm border rounded">
+              <p className="mb-1 fw-semibold">{selectedAddress.street}</p>
+              <p className="mb-1 text-muted">
+                {selectedAddress.city}, {selectedAddress.state} - {selectedAddress.postalCode}
+              </p>
+              <p className="mb-1 text-muted">{selectedAddress.country}</p>
+              <p className="text-muted small">📞 {selectedAddress.phone}</p>
+            </div>
+          )}
+        </div>
       )}
 
-      <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
-          value={newAddress}
-          placeholder="Add new address"
-          onChange={(e) => setNewAddress(e.target.value)}
-        />
-        <button className="btn btn-outline-primary" onClick={handleAdd}>
-          Add
-        </button>
+      {/* Add new address form */}
+      <h6 className="fw-bold mt-4">Add New Address</h6>
+      <div className="row g-2">
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Street"
+            value={form.street}
+            onChange={(e) => setForm({ ...form, street: e.target.value })}
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="City"
+            value={form.city}
+            onChange={(e) => setForm({ ...form, city: e.target.value })}
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="State"
+            value={form.state}
+            onChange={(e) => setForm({ ...form, state: e.target.value })}
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Postal Code"
+            value={form.postalCode}
+            onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Country"
+            value={form.country}
+            onChange={(e) => setForm({ ...form, country: e.target.value })}
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Phone"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          />
+        </div>
+        <div className="col-12">
+          <button className="btn btn-outline-primary w-100 mt-2" onClick={handleAdd}>
+            Add Address
+          </button>
+        </div>
       </div>
     </div>
   );
