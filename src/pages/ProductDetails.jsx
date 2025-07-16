@@ -2,6 +2,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import useFetch from "../useFetch";
 import { useWishlist } from "../contexts/WishlistContext";
 import { useCart } from "../contexts/CartContext";
+import { useEffect, useState } from "react";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -10,38 +11,55 @@ export default function ProductDetails() {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  if (loading) return <div className="text-center py-5 fs-4">Loading product details...</div>;
-  if (error) return <div className="text-center text-danger py-5 fs-4">Error loading product: {error}</div>;
+  const [alert, setAlert] = useState(null);
 
   const product = data?.data?.products.find((p) => p._id === id);
-  if (!product) return <div className="text-center py-5 fs-4">Product not found.</div>;
+  const isWishlisted = wishlist.some((item) => item._id === product?._id);
 
-  const isWishlisted = wishlist.some((item) => item._id === product._id);
+  // Auto-dismiss alert after 3 seconds
+  useEffect(() => {
+    if (alert) {
+      const timeout = setTimeout(() => setAlert(null), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [alert]);
+
+  if (loading) return <div className="text-center py-5 fs-4">Loading product details...</div>;
+  if (error) return <div className="text-center text-danger py-5 fs-4">Error loading product: {error}</div>;
+  if (!product) return <div className="text-center py-5 fs-4">Product not found.</div>;
 
   const handleWishlist = () => {
     if (isWishlisted) {
       removeFromWishlist(product._id);
-      alert("Removed from wishlist");
+      setAlert({ type: "danger", message: "Removed from wishlist" });
     } else {
-      addToWishlist(product);
-      alert("Added to wishlist");
+      addToWishlist(product._id);
+      setAlert({ type: "success", message: "Added to wishlist" });
     }
   };
 
   const handleAddToCart = () => {
     addToCart(product._id, 1);
-    alert("Added to cart");
+    setAlert({ type: "success", message: "Added to cart" });
   };
 
   return (
     <div className="container py-5">
-      <div className="mb-4" style={{ paddingTop: "20px" }}>
+      <div className="mb-4">
         <Link to="/products" className="btn btn-outline-dark">
-          <i className="bi bi-arrow-left"></i> Back to Product
+          <i className="bi bi-arrow-left"></i> Back to Products
         </Link>
       </div>
 
+      {/* 🔔 Alert Message */}
+      {alert && (
+        <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3 shadow-sm`} role="alert">
+          {alert.message}
+        </div>
+      )}
+
       <div className="d-flex flex-column align-items-center">
+        {/* Product Image */}
         <div
           className="mb-5 rounded position-relative"
           style={{
@@ -67,11 +85,12 @@ export default function ProductDetails() {
             src={product.image || "/placeholder.jpg"}
             alt={product.title}
             className="img-fluid"
-            style={{ width: "100%", height: "100%", objectFit: "cover", imageRendering: "auto" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
           />
         </div>
 
+        {/* Product Info */}
         <div className="text-center w-100" style={{ maxWidth: "1000px" }}>
           <h2 className="fw-bold mb-3 display-4">{product.title}</h2>
           <p className="text-muted mb-2 fs-5">by <strong>{product.artist}</strong></p>
@@ -99,6 +118,7 @@ export default function ProductDetails() {
             </p>
           </div>
 
+          {/* Action Buttons */}
           <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             <button
               className="btn btn-lg btn-primary px-4 shadow d-flex align-items-center gap-2 fs-5"

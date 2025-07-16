@@ -1,32 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "../contexts/CartContext"; // ✅ use global cart
+import { useCart } from "../contexts/CartContext";
+import AddressManager from "../components/AddressManager";
+
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
-import AddressManager from "../components/AddressManager"; 
+
 export default function CartPage() {
-  const { cart, removeFromCart, addToCart } = useCart(); // ✅ hook from context
+  const { cart, removeFromCart, addToCart } = useCart();
+  const [alert, setAlert] = useState(null);
+
   const items = cart;
   const total = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const showAlert = (type, message) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert(null), 3000);
+  };
 
   const updateQuantity = async (productId, quantity, stock) => {
     if (quantity <= 0) {
-      await removeFromCart(productId); 
+      await removeFromCart(productId);
+      showAlert("danger", "Item removed from cart.");
     } else if (quantity > stock) {
-      alert("Not enough stock available!");
+      showAlert("warning", "Not enough stock available!");
     } else {
-      await addToCart(productId, quantity, true); 
- 
+      await addToCart(productId, quantity, true);
+      showAlert("info", "Quantity updated.");
     }
   };
 
   if (!items.length) return <p className="text-center mt-4">Your cart is empty.</p>;
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <div className="container py-5">
       <h2 className="mb-4">Your Cart</h2>
       <hr />
+
+      {/* Alert */}
+      {alert && (
+        <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3`} role="alert">
+          {alert.message}
+        </div>
+      )}
+
       <div className="row g-5">
         <div className="col-lg-8">
           {items.map(({ product, quantity }) => (
@@ -66,11 +83,15 @@ export default function CartPage() {
                         +
                       </button>
                       <button
-                        className="btn btn-sm btn-outline-danger ms-auto"
-                        onClick={() => removeFromCart(product._id)}
-                      >
-                        Remove
-                      </button>
+  className="btn btn-sm btn-outline-danger ms-auto d-flex align-items-center justify-content-center"
+  onClick={() => {
+    removeFromCart(product._id);
+    showAlert("danger", "Item removed from cart.");
+  }}
+  title="Remove from cart"
+>
+  <i className="bi bi-trash"></i>
+</button>
                     </div>
                   </div>
                 </div>
@@ -83,17 +104,19 @@ export default function CartPage() {
           <div className="card border-0 shadow sticky-top rounded-4 p-4" style={{ top: "80px" }}>
             <h4 className="mb-3 fw-semibold">Order Summary</h4>
 
-    <AddressManager userId={STATIC_USER_ID} />
+            <AddressManager userId={STATIC_USER_ID} />
+
             <p className="d-flex justify-content-between">
               <span>Total Items:</span> <span>{totalItems}</span>
-
             </p>
             <p className="d-flex justify-content-between fw-bold fs-5">
-              <span>${total.toLocaleString()}</span>
+              <span>Total:</span> <span>${total.toLocaleString()}</span>
             </p>
+
             <button className="btn btn-primary w-100 mt-3 py-2 fw-bold">
               Proceed to Checkout
             </button>
+
             <div className="mt-3 small text-muted">
               <i className="bi bi-truck"></i> Delivery in 3–7 days
             </div>

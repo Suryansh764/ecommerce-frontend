@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "../useFetch";
+import { useWishlist } from "../contexts/WishlistContext";
+
 
 export default function Profile() {
   const { userId } = useParams();
@@ -15,6 +17,9 @@ export default function Profile() {
         Error loading profile.
       </div>
     );
+
+    const { wishlist } = useWishlist(); // global live wishlist
+
 
   return (
     <div className="container py-5">
@@ -67,7 +72,8 @@ export default function Profile() {
           }}
         >
           ❤️ <h6 className="mt-2 mb-1">Wishlist</h6>
-          <strong>{user.wishlist?.length || 0}</strong>
+          <strong>{wishlist.length}</strong>
+
           <p className="text-muted small mt-1 mb-0">Click to view</p>
         </div>
       </div>
