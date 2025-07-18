@@ -6,7 +6,7 @@ import { useWishlist } from "../contexts/WishlistContext";
 export default function Profile() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/users/${userId}`);
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-coral-nine.vercel.app/api/users/${userId}`);
   const user = data?.data?.user;
 
   if (loading)

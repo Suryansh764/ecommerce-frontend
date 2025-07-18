@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch("https://ecommerce-backend-nu-five.vercel.app/api/products");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-coral-nine.vercel.app/api/products");
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 

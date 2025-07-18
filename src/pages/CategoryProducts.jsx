@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function CategoryProductsPage() {
   const { categoryId } = useParams();
-  const { data, loading, error } = useFetch(`https://ecommerce-backend-nu-five.vercel.app/api/products?category=${categoryId}`);
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-coral-nine.vercel.app/api/products?category=${categoryId}`);
   const products = data?.data?.products || [];
 
   const [minStock, setMinStock] = useState(0);
@@ -44,7 +44,7 @@ export default function CategoryProductsPage() {
 
       <div className="mb-4 row g-3">
         <div className="col-md-6">
-          <label className="form-label fw-semibold">💰 Sort by Price</label>
+          <label className="form-label fw-semibold">Sort by Price</label>
           <select
             className="form-select"
             value={priceSort}
@@ -57,7 +57,7 @@ export default function CategoryProductsPage() {
         </div>
 
         <div className="col-md-6">
-          <label className="form-label fw-semibold">🔤 Sort Alphabetically</label>
+          <label className="form-label fw-semibold">Sort Alphabetically</label>
           <select
             className="form-select"
             value={alphaSort}
@@ -70,7 +70,7 @@ export default function CategoryProductsPage() {
         </div>
 
         <div className="col-12">
-          <label className="form-label fw-semibold">📦 Minimum Stock: {minStock}</label>
+          <label className="form-label fw-semibold">Minimum Stock: {minStock}</label>
           <input
             type="range"
             className="form-range"

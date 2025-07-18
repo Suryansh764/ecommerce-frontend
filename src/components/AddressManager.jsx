@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://ecommerce-backend-nu-five.vercel.app";
+const BACKEND_URL = "https://ecommerce-backend-coral-nine.vercel.app";
 
-export default function AddressManager({ userId }) {
+export default function AddressManager({ userId,  }) {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [form, setForm] = useState({
