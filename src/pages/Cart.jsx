@@ -157,20 +157,20 @@ const [paymentMethod, setPaymentMethod] = useState("");
   onSelectAddress={(id) => setSelectedAddressId(id)}
 />
 
- <h6 className="fw-bold mt-4">Select Payment Method</h6>
-      <select
-        className="form-select mt-2"
-        value={selectedPayment}
-        onChange={(e) => setSelectedPayment(e.target.value)}
-      >
-        <option value="">Select payment method</option>
-        <option value="UPI">UPI</option>
-        <option value="GPay">GPay</option>
-        <option value="Paytm">Paytm</option>
-        <option value="Debit Card">Debit Card</option>
-        <option value="Credit Card">Credit Card</option>
-        <option value="Cash on Delivery">Cash on Delivery</option>
-      </select>
+<h6 className="fw-bold mt-4">Select Payment Method</h6>
+<select
+  className="form-select mt-2"
+  value={paymentMethod}
+  onChange={(e) => setPaymentMethod(e.target.value)}
+>
+  <option value="">Select payment method</option>
+  <option value="UPI">UPI</option>
+  <option value="GPay">GPay</option>
+  <option value="Paytm">Paytm</option>
+  <option value="Debit Card">Debit Card</option>
+  <option value="Credit Card">Credit Card</option>
+  <option value="Cash on Delivery">Cash on Delivery</option>
+</select>
 
 
     <p className="d-flex justify-content-between">
