@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 export default function Orders() {
   const { userId } = useParams();
-  const { data, loading, error } = useFetch(`https://ecommerce-backend-three-tau.vercel.app/api/orders/${userId}`);
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-omega-orcin.vercel.app/api/orders/${userId}`);
   const orders = data?.data?.orders || [];
 
   if (loading) return <div className="text-center py-5 fs-4">Loading orders...</div>;

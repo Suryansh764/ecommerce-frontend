@@ -12,7 +12,7 @@ export default function Profile() {
     data: userData,
     loading: userLoading,
     error: userError,
-  } = useFetch(`https://ecommerce-backend-three-tau.vercel.app/api/users/${userId}`);
+  } = useFetch(`https://ecommerce-backend-omega-orcin.vercel.app/api/users/${userId}`);
   const user = userData?.data?.user;
 
 
@@ -20,7 +20,7 @@ export default function Profile() {
     data: ordersData,
     loading: ordersLoading,
     error: ordersError,
-  } = useFetch(`https://ecommerce-backend-three-tau.vercel.app/api/orders/${userId}`);
+  } = useFetch(`https://ecommerce-backend-omega-orcin.vercel.app/api/orders/${userId}`);
   const orders = ordersData?.data?.orders || [];
 
   if (userLoading)
@@ -90,7 +90,7 @@ export default function Profile() {
                 <p className="text-muted small mt-1 mb-0">Click to view</p>
               </div>
 
-              {/* Wishlist */}
+
               <div
                 className="bg-light border p-3 rounded-3 text-center"
                 role="button"

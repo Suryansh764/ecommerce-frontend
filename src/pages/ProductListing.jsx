@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useWishlist } from "../contexts/WishlistContext";
 
 export default function ProductListing() {
-  const { data, loading, error } = useFetch("https://ecommerce-backend-three-tau.vercel.app/api/products");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-omega-orcin.vercel.app/api/products");
   const products = data?.data?.products || [];
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
