@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://ecommerce-backend-three-tau.vercel.app/" ;
+const BACKEND_URL = "https://ecommerce-backend-three-tau.vercel.app" ;
 
 export default function AddressManager({ userId, onSelectAddress }) {
   const [addresses, setAddresses] = useState([]);
@@ -14,7 +14,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
     phone: ""
   });
 
-  // Fetch user addresses from backend
+  
   const fetchAddresses = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/api/users/${userId}`);
@@ -22,7 +22,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
       const fetchedAddresses = data?.data?.user?.addresses || [];
       setAddresses(fetchedAddresses);
 
-      // Auto-select the first address if none selected
+      
       if (fetchedAddresses.length > 0 && !selectedAddressId) {
         setSelectedAddressId(fetchedAddresses[0]._id);
       }
@@ -31,7 +31,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
     }
   };
 
-  // Add a new address to backend
+
   const handleAdd = async () => {
     const isFormValid = Object.values(form).every((val) => val.trim() !== "");
     if (!isFormValid) return alert("Please fill in all address fields");
@@ -45,7 +45,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
         body: JSON.stringify({ addresses: [addressObj] })
       });
 
-      // Clear form and re-fetch addresses
+
       setForm({
         street: "",
         city: "",
@@ -60,7 +60,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
     }
   };
 
-  // Notify parent when address selection changes
+
   useEffect(() => {
     if (selectedAddressId && typeof onSelectAddress === "function") {
       onSelectAddress(selectedAddressId);

@@ -42,9 +42,9 @@ const filteredCategories = categoryArray.filter((category) => {
         <section>
 
           {loading && <p>Loading...</p>}
-          {error && <p>Error loading blogs.</p>}
+          {error && <p>Error loading products.</p>}
           {!loading && filteredCategories.length === 0 && (
-            <p>No blogs match your search.</p>
+            <p>No product match your search.</p>
           )}
 
 
