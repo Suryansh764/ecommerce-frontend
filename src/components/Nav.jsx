@@ -5,9 +5,10 @@ import { useState, useEffect } from 'react';
 import { useCart } from "../contexts/CartContext";
 
 export default function Nav({ searchQuery, setSearchQuery }) {
-  const { data } = useFetch("https://ecommerce-backend-coral-nine.vercel.app/api/products");
+  const { data } = useFetch("https://ecommerce-backend-three-tau.vercel.app/api/products");
   const { wishlist } = useWishlist();
   const savedCount = wishlist.length; 
+
   const [isFocused, setIsFocused] = useState(false);
 
   const { cart } = useCart();
@@ -93,13 +94,12 @@ const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
               <li className="nav-item position-relative">
   <Link className="nav-link text-light fs-5" to="/cart">
     <i className="bi bi-cart-fill"></i>
-    {cart.length > 0 && (
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-primary">
-        {cartCount}
-      </span>
-    )}
+    <span className="position-absolute top-0 start-100 translate-middle badge rounded bg-primary">
+      {cartCount}
+    </span>
   </Link>
 </li>
+
             </ul>
           </div>
         </div>

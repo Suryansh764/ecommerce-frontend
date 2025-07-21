@@ -16,8 +16,22 @@ export default function WishlistPage() {
     }
   }, [alert]);
 
-  if (wishlist.length === 0)
-    return <div className="text-center py-5">No items in your wishlist.</div>;
+if (wishlist.length === 0)
+  return (
+    <div className="text-center py-5">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+        alt="Empty Wishlist"
+        style={{ width: "120px", opacity: 0.75 }}
+        className="mb-4"
+      />
+      <h4 className="fw-semibold mb-2">Your Wishlist is Empty</h4>
+      <p className="text-muted mb-4">Save items you love by clicking the ❤️ icon.</p>
+      <a href="/products" className="btn btn-secondary  px-4 py-2 rounded-pill">
+        Browse Products
+      </a>
+    </div>
+  );
 
   return (
     <div className="container py-5">

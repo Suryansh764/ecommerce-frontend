@@ -10,6 +10,7 @@ import Wishlist from './pages/Wishlist';
 import Profile from "./pages/Profile"; 
 import CartPage from './pages/Cart';
 import { CartProvider } from "./contexts/CartContext";
+import Orders from './pages/Orders';
 
 
 
@@ -20,7 +21,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <WishlistProvider> {/* ✅ Use Wishlist context here */}
+    <WishlistProvider> 
      <CartProvider>
       <Router>
         <Nav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -32,7 +33,8 @@ function App() {
           <Route path="/saved" element={<Wishlist />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/cart" element={<CartPage />} />
-        
+          <Route path="/orders/:userId" element={<Orders />} />
+
         </Routes>
       </Router>
       </CartProvider>

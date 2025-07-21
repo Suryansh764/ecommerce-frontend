@@ -43,37 +43,65 @@ const [paymentMethod, setPaymentMethod] = useState("");
   }
 
   try {
-    const orderData = {
-      userId: STATIC_USER_ID,
-      items: items.map((item) => ({
-        product: item.product._id,
-        quantity: item.quantity,
-      })),
-      totalAmount: total,
-      shippingAddress: selectedAddressId,
-      paymentMethod,
-    };
+  const orderData = {
+  user: STATIC_USER_ID,
+  items: items.map((item) => ({
+    product: item.product._id,
+    quantity: item.quantity,
+  })),
+  totalAmount: total,
+  shippingAddress: selectedAddressId, // ✅ FIXED
+  paymentMethod,
+};
 
-    const response = await fetch("http://localhost:3000/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
+
+
+    console.log("orderData", orderData);
+
+
+   const response = await fetch("http://localhost:3000/api/orders", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(orderData),
+});
+
+if (!response.ok) {
+  const errorMessage = await response.text(); // can also try `.json()` if it's JSON
+  console.error("Backend error response:", errorMessage);
+  throw new Error("Failed to place order");
+}
+
 
     if (!response.ok) throw new Error("Failed to place order");
 
     setOrderPlaced(true);
     showAlert("success", "Order placed successfully!");
   } catch (error) {
-    console.error(error);
+    console.error("Error placing order:", error);
     showAlert("danger", "Failed to place order. Try again.");
   }
 };
 
 
-  if (!items.length) return <p className="text-center mt-4">Your cart is empty.</p>;
+if (!items.length)
+  return (
+    <div className="text-center py-5">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+        alt="Empty Cart"
+        style={{ width: "120px", opacity: 0.7 }}
+        className="mb-4"
+      />
+      <h4 className="fw-semibold mb-2">Your Cart is Empty</h4>
+      <p className="text-muted mb-4">Looks like you haven’t added anything yet.</p>
+      <a href="/" className="btn btn-secondary px-4 py-2 rounded-pill">
+        Continue Shopping
+      </a>
+    </div>
+  );
+
 
   return (
     <div className="container py-5">

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://ecommerce-backend-coral-nine.vercel.app";
+const BACKEND_URL = "https://ecommerce-backend-three-tau.vercel.app/" ;
 
-export default function AddressManager({ userId,  }) {
+export default function AddressManager({ userId, onSelectAddress }) {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [form, setForm] = useState({
@@ -14,12 +14,15 @@ export default function AddressManager({ userId,  }) {
     phone: ""
   });
 
+  // Fetch user addresses from backend
   const fetchAddresses = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/api/users/${userId}`);
       const data = await res.json();
       const fetchedAddresses = data?.data?.user?.addresses || [];
       setAddresses(fetchedAddresses);
+
+      // Auto-select the first address if none selected
       if (fetchedAddresses.length > 0 && !selectedAddressId) {
         setSelectedAddressId(fetchedAddresses[0]._id);
       }
@@ -28,6 +31,7 @@ export default function AddressManager({ userId,  }) {
     }
   };
 
+  // Add a new address to backend
   const handleAdd = async () => {
     const isFormValid = Object.values(form).every((val) => val.trim() !== "");
     if (!isFormValid) return alert("Please fill in all address fields");
@@ -40,6 +44,8 @@ export default function AddressManager({ userId,  }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ addresses: [addressObj] })
       });
+
+      // Clear form and re-fetch addresses
       setForm({
         street: "",
         city: "",
@@ -54,6 +60,13 @@ export default function AddressManager({ userId,  }) {
     }
   };
 
+  // Notify parent when address selection changes
+  useEffect(() => {
+    if (selectedAddressId && typeof onSelectAddress === "function") {
+      onSelectAddress(selectedAddressId);
+    }
+  }, [selectedAddressId, onSelectAddress]);
+
   useEffect(() => {
     fetchAddresses();
   }, []);
@@ -61,9 +74,8 @@ export default function AddressManager({ userId,  }) {
   const selectedAddress = addresses.find(addr => addr._id === selectedAddressId);
 
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       <h5 className="fw-semibold mb-3">Shipping Address</h5>
-
 
       {addresses.length > 0 && (
         <div className="mb-3">
@@ -72,13 +84,13 @@ export default function AddressManager({ userId,  }) {
             value={selectedAddressId || ""}
             onChange={(e) => setSelectedAddressId(e.target.value)}
           >
+            <option value="" disabled>Select a saved address</option>
             {addresses.map((addr) => (
               <option key={addr._id} value={addr._id}>
                 {addr.street}, {addr.city} ({addr.postalCode})
               </option>
             ))}
           </select>
-
 
           {selectedAddress && (
             <div className="card mt-3 p-3 shadow-sm border rounded">
@@ -92,7 +104,6 @@ export default function AddressManager({ userId,  }) {
           )}
         </div>
       )}
-
 
       <h6 className="fw-bold mt-4">Add New Address</h6>
       <div className="row g-2">
