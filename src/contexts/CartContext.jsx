@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 const STATIC_USER_ID = "686e703ba1875a9c9aa508c6";
-const BACKEND_URL = "https://ecommerce-backend-omega-orcin.vercel.app";
+const BACKEND_URL = "https://ecommerce-backend-theta-lake.vercel.app";
 
 export function useCart() {
   return useContext(CartContext);

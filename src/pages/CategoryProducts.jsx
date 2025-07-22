@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function CategoryProductsPage() {
   const { categoryId } = useParams();
-  const { data, loading, error } = useFetch(`https://ecommerce-backend-omega-orcin.vercel.app/api/products?category=${categoryId}`);
+  const { data, loading, error } = useFetch(`https://ecommerce-backend-theta-lake.vercel.app/api/products?category=${categoryId}`);
   const products = data?.data?.products || [];
 
   const [minStock, setMinStock] = useState(0);

@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 export default function Orders() {
   const { userId } = useParams();
   const { data, loading, error } = useFetch(
-    `https://ecommerce-backend-omega-orcin.vercel.app/api/orders/${userId}`
+    `https://ecommerce-backend-theta-lake.vercel.app/api/orders/${userId}`
   );
   const orders = data?.data?.orders || [];
 

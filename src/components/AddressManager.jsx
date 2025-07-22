@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://ecommerce-backend-omega-orcin.vercel.app";
+const BACKEND_URL = "https://ecommerce-backend-theta-lake.vercel.app";
 
 export default function AddressManager({ userId, onSelectAddress, onAddAddress }) {
   const [addresses, setAddresses] = useState([]);
@@ -53,7 +53,7 @@ export default function AddressManager({ userId, onSelectAddress, onAddAddress }
 
       await fetchAddresses();
       if (typeof onAddAddress === "function") {
-        onAddAddress(); // ✅ Show UI message in CartPage
+        onAddAddress(); 
       }
     } catch (err) {
       console.error("Failed to add address", err);
