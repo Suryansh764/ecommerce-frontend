@@ -15,12 +15,12 @@ export default function Profile() {
   const [addresses, setAddresses] = useState([]);
 
   const { data: userData, loading: userLoading, error: userError } = useFetch(
-    `https://ecommerce-backend-theta-lake.vercel.app/api/users/${userId}`
+    `https://ecommerce-backend-omega-roan.vercel.app/api/users/${userId}`
   );
   const user = userData?.data?.user;
 
   const { data: ordersData, loading: ordersLoading, error: ordersError } = useFetch(
-    `https://ecommerce-backend-theta-lake.vercel.app/api/orders/${userId}`
+    `https://ecommerce-backend-omega-roan.vercel.app/api/orders/${userId}`
   );
   const orders = ordersData?.data?.orders || [];
 
@@ -36,7 +36,7 @@ export default function Profile() {
     const deletedId = addresses[index]._id;
 
     const res = await fetch(
-      `https://ecommerce-backend-theta-lake.vercel.app/api/users/${userId}/address/${deletedId}`,
+      `https://ecommerce-backend-omega-roan.vercel.app/api/users/${userId}/address/${deletedId}`,
       { method: "DELETE" }
     );
 
@@ -66,7 +66,7 @@ export default function Profile() {
   updatedAddresses[editingIndex] = editForm;
   try {
     const res = await fetch(
-      `https://ecommerce-backend-theta-lake.vercel.app/api/users/${userId}/address`,
+      `https://ecommerce-backend-omega-roan.vercel.app/api/users/${userId}/address`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch("https://ecommerce-backend-theta-lake.vercel.app/api/products");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-omega-roan.vercel.app/api/products");
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 

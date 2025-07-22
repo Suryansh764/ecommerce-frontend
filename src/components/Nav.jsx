@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from "../contexts/CartContext";
 
 export default function Nav({ searchQuery, setSearchQuery }) {
-  const { data } = useFetch("https://ecommerce-backend-theta-lake.vercel.app/api/products");
+  const { data } = useFetch("https://ecommerce-backend-omega-roan.vercel.app/api/products");
   const { wishlist } = useWishlist();
   const savedCount = wishlist.length;
 

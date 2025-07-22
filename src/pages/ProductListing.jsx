@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductListing() {
-  const { data, loading, error } = useFetch("https://ecommerce-backend-theta-lake.vercel.app/api/products");
+  const { data, loading, error } = useFetch("https://ecommerce-backend-omega-roan.vercel.app/api/products");
   const products = data?.data?.products || [];
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
