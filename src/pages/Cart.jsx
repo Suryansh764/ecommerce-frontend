@@ -214,37 +214,72 @@ export default function CartPage() {
               <option value="Cash on Delivery">Cash on Delivery</option>
             </select>
 
+        <h6 className="fw-bold fs-5 mt-4">Item(s) Summary</h6>
+        <hr className="my-2" />
+<ul className="list-group list-group-flush mb-3">
+  {items.map(({ product, quantity }) => (
+    <li
+      key={product._id}
+      className="list-group-item px-0 d-flex justify-content-between align-items-center border-0 pb-2"
+      style={{ borderBottom: "1px dashed #ccc" }}
+    >
+      <div>
+        <div className="fw-semibold">{product.title}</div>
+        <div className="text-muted small">Qty: {quantity} × ${product.price.toFixed(2)}</div>
+      </div>
+      <div className="fw-bold text-end">${(product.price * quantity).toFixed(2)}</div>
+    </li>
+  ))}
+</ul>
+
+
+
+
             <p className="d-flex mt-4 justify-content-between">
-              <span><strong>Item(s) Count:</strong></span> <span className="fs-5">{totalItems}</span>
+              <span><strong>Total Count:</strong></span> <span className="fs-5">{totalItems}</span>
             </p>
             <p className="d-flex justify-content-between fw-bold fs-5">
               <span>Total:</span> <span>${total.toLocaleString()}</span>
             </p>
 
-            <div className="form-check mb-3">
-              <input
-                className="form-check-input border border-dark"
-                type="checkbox"
-                id="confirmCheckbox"
-                checked={isConfirmed}
-                onChange={(e) => setIsConfirmed(e.target.checked)}
-                style={{
-                  width: "1rem",
-                  height: "1rem",
-                  cursor: "pointer",
-                  accentColor: "#dc3545",
-                  transition: "all 0.3s ease"
-                }}
-              />
-              <label className="form-check-label" htmlFor="confirmCheckbox">
-                I've confirmed my:
-                <ol className="mb-1">
-                  <li>Shipping address</li>
-                  <li>Payment method</li>
-                  <li>Order details</li>
-                </ol>
-              </label>
-            </div>
+          <div className="border rounded-4 p-3 mb-3 bg-light shadow-sm">
+  <div className="form-check d-flex align-items-start">
+    <input
+      className="form-check-input mt-1 me-3"
+      type="checkbox"
+      id="confirmCheckbox"
+      checked={isConfirmed}
+      onChange={(e) => setIsConfirmed(e.target.checked)}
+      style={{
+        width: "1.2rem",
+        height: "1.2rem",
+        cursor: "pointer",
+        accentColor: "#198754",
+        border: "2px solid #198754",
+        boxShadow: "0 0 0 2px rgba(25, 135, 84, 0.25)",
+        transition: "all 0.3s ease"
+      }}
+    />
+    <label className="form-check-label" htmlFor="confirmCheckbox" style={{ lineHeight: "1.5" }}>
+      <span className="fw-semibold">I’ve confirmed the following:</span>
+      <ul className="mb-1 mt-2 ps-3 text-muted small">
+        <li>Shipping address</li>
+        <li>Payment method</li>
+        <li>Order details</li>
+      </ul>
+    </label>
+  </div>
+
+  {/* ✅ Conditional warning message */}
+  {!isConfirmed && (
+    <div className="alert alert-warning mt-3 mb-0 py-2 px-3 rounded-3 small d-flex align-items-center gap-2">
+      <i className="bi bi-exclamation-triangle-fill text-warning"></i>
+      Please confirm all details above to proceed with your order.
+    </div>
+  )}
+</div>
+
+
 
             <button
               className="btn btn-primary w-100 mt-1 py-2 fw-bold"
@@ -255,7 +290,7 @@ export default function CartPage() {
             </button>
 
             <div className="mt-3 small text-muted">
-              <i className="bi bi-truck"></i> Delivery in 3–7 days
+              <i className="bi bi-truck"></i> Shipping in 2–3 days
             </div>
 
             {orderPlaced && (
