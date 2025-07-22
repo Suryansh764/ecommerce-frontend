@@ -62,9 +62,14 @@ const addToCart = async (productId, quantity = 1, override = false) => {
       console.error("Remove from cart failed", err);
     }
   };
+  const clearCart = async () => {
+  for (let item of cart) {
+    await removeFromCart(item.product._id);
+  }
+};
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, fetchCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, fetchCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

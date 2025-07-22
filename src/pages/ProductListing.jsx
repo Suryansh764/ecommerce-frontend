@@ -1,7 +1,9 @@
 import useFetch from "../useFetch";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../contexts/WishlistContext";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductListing() {
   const { data, loading, error } = useFetch("https://ecommerce-backend-omega-orcin.vercel.app/api/products");
@@ -15,14 +17,6 @@ export default function ProductListing() {
   const [priceSort, setPriceSort] = useState("");
   const [alphaSort, setAlphaSort] = useState("");
   const [showAllFilters, setShowAllFilters] = useState(false);
-  const [alert, setAlert] = useState(null);
-
-  useEffect(() => {
-    if (alert) {
-      const timeout = setTimeout(() => setAlert(null), 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [alert]);
 
   const allCategories = [...new Set(products.map((p) => p.category?.name || "Uncategorized"))];
   const maxStock = Math.max(...products.map((p) => p.stock || 0), 0);
@@ -57,18 +51,18 @@ export default function ProductListing() {
   });
 
   if (loading) return <p className="text-center mt-4">Loading...</p>;
-  if (error) return <p className="text-center text-danger mt-4">Error: {error}</p>;
+  if (error) {
+    toast.error(`Error: ${error}`);
+    return <p className="text-center text-danger mt-4">Error loading products.</p>;
+  }
 
   return (
     <div className="container py-5">
+      {/* Toast container */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick />
+
       <h2 className="mb-4 display-5">All Products</h2>
       <hr />
-
-      {alert && (
-        <div className={`alert alert-${alert.type} alert-dismissible fade show`} role="alert">
-          {alert.message}
-        </div>
-      )}
 
       <div className="row gx-5">
         {/* FILTER SIDEBAR */}
@@ -194,9 +188,24 @@ export default function ProductListing() {
                     </Link>
                     <div className="card-body d-flex flex-column">
                       <h5 className="card-title">{product.title}</h5>
-                      <span className=" rounded-pill text-bg-secondary px-3 py-2 fs-6 mb-3 shadow-sm">
-  {product.category?.name}
-</span>
+
+                      <span
+                        className="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 fs-6 rounded-3"
+                        style={{
+                          backgroundColor: "#f4f4f4",
+                          color: "#333",
+                          fontWeight: 500,
+                          fontFamily: "Trebuchet MS, sans-serif",
+                          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+                          maxWidth: "100%",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
+                        }}
+                      >
+                        <i className="bi bi-tags-fill text-muted"></i>
+                        <span className="text-truncate">{product.category?.name || "Uncategorized"}</span>
+                      </span>
 
                       <p
                         className="card-text"
@@ -225,10 +234,10 @@ export default function ProductListing() {
                             onClick={() => {
                               if (isWishlisted(product._id)) {
                                 removeFromWishlist(product._id);
-                                setAlert({ type: "danger", message: "Removed from wishlist." });
+                                toast.info("Removed from wishlist.");
                               } else {
                                 addToWishlist(product._id);
-                                setAlert({ type: "success", message: "Added to wishlist." });
+                                toast.success("Added to wishlist.");
                               }
                             }}
                           >

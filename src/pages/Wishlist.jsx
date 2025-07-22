@@ -1,49 +1,46 @@
 import { useWishlist } from "../contexts/WishlistContext";
 import { useCart } from "../contexts/CartContext"; 
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function WishlistPage() {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { addToCart, cart } = useCart();
-  const [alert, setAlert] = useState(null);
 
-  
-  useEffect(() => {
-    if (alert) {
-      const timeout = setTimeout(() => setAlert(null), 3000);
-      return () => clearTimeout(timeout);
+  const handleAddToCart = async (product) => {
+    const alreadyInCart = cart.some(i => i.product._id === product._id);
+    if (alreadyInCart) {
+      toast.warning("Already in cart.");
+    } else {
+      await addToCart(product._id);
+      await removeFromWishlist(product._id);
+      toast.success(`${product.title} moved to cart.`);
     }
-  }, [alert]);
+  };
 
-if (wishlist.length === 0)
-  return (
-    <div className="text-center py-5">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
-        alt="Empty Wishlist"
-        style={{ width: "120px", opacity: 0.75 }}
-        className="mb-4"
-      />
-      <h4 className="fw-semibold mb-2">Your Wishlist is Empty</h4>
-      <p className="text-muted mb-4">Save items you love by clicking the ❤️ icon.</p>
-      <a href="/products" className="btn btn-secondary  px-4 py-2 rounded-pill">
-        Browse Products
-      </a>
-    </div>
-  );
+  if (wishlist.length === 0)
+    return (
+      <div className="text-center py-5">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+          alt="Empty Wishlist"
+          style={{ width: "120px", opacity: 0.75 }}
+          className="mb-4"
+        />
+        <h4 className="fw-semibold mb-2">Your Wishlist is Empty</h4>
+        <p className="text-muted mb-4">Save items you love by clicking the ❤️ icon.</p>
+        <a href="/products" className="btn btn-secondary px-4 py-2 rounded-pill">
+          Browse Products
+        </a>
+        <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
+      </div>
+    );
 
   return (
     <div className="container py-5">
       <h2 className="mb-4 display-5">Your Wishlist</h2>
       <hr />
-
-     
-      {alert && (
-        <div className={`alert alert-${alert.type} alert-dismissible fade show rounded-3`} role="alert">
-          {alert.message}
-        </div>
-      )}
 
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {wishlist.map((product) => (
@@ -65,15 +62,7 @@ if (wishlist.length === 0)
                   <div className="d-flex gap-2">
                     <button
                       className="btn btn-primary"
-                      onClick={async () => {
-                        const alreadyInCart = cart.some(item => item.product._id === product._id);
-                        if (alreadyInCart) {
-                          setAlert({ type: "warning", message: "Product already exists in cart." });
-                        } else {
-                          await addToCart(product._id);
-                          setAlert({ type: "success", message: `${product.title} added to cart.` });
-                        }
-                      }}
+                      onClick={() => handleAddToCart(product)}
                     >
                       Add to Cart
                     </button>
@@ -82,7 +71,7 @@ if (wishlist.length === 0)
                       className="btn btn-outline-danger"
                       onClick={() => {
                         removeFromWishlist(product._id);
-                        setAlert({ type: "danger", message: `${product.title} removed from wishlist.` });
+                        toast.error(`${product.title} removed from wishlist.`);
                       }}
                     >
                       Remove
@@ -94,6 +83,7 @@ if (wishlist.length === 0)
           </div>
         ))}
       </div>
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }

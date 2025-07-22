@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = "https://ecommerce-backend-omega-orcin.vercel.app" ;
+const BACKEND_URL = "https://ecommerce-backend-omega-orcin.vercel.app";
 
-export default function AddressManager({ userId, onSelectAddress }) {
+export default function AddressManager({ userId, onSelectAddress, onAddAddress }) {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [form, setForm] = useState({
@@ -11,10 +11,9 @@ export default function AddressManager({ userId, onSelectAddress }) {
     state: "",
     postalCode: "",
     country: "",
-    phone: ""
+    phone: "",
   });
 
-  
   const fetchAddresses = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/api/users/${userId}`);
@@ -22,7 +21,6 @@ export default function AddressManager({ userId, onSelectAddress }) {
       const fetchedAddresses = data?.data?.user?.addresses || [];
       setAddresses(fetchedAddresses);
 
-      
       if (fetchedAddresses.length > 0 && !selectedAddressId) {
         setSelectedAddressId(fetchedAddresses[0]._id);
       }
@@ -30,7 +28,6 @@ export default function AddressManager({ userId, onSelectAddress }) {
       console.error("Failed to fetch addresses", err);
     }
   };
-
 
   const handleAdd = async () => {
     const isFormValid = Object.values(form).every((val) => val.trim() !== "");
@@ -42,9 +39,8 @@ export default function AddressManager({ userId, onSelectAddress }) {
       await fetch(`${BACKEND_URL}/api/addresses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ addresses: [addressObj] })
+        body: JSON.stringify({ addresses: [addressObj] }),
       });
-
 
       setForm({
         street: "",
@@ -52,14 +48,17 @@ export default function AddressManager({ userId, onSelectAddress }) {
         state: "",
         postalCode: "",
         country: "",
-        phone: ""
+        phone: "",
       });
-      fetchAddresses();
+
+      await fetchAddresses();
+      if (typeof onAddAddress === "function") {
+        onAddAddress(); // ✅ Show UI message in CartPage
+      }
     } catch (err) {
       console.error("Failed to add address", err);
     }
   };
-
 
   useEffect(() => {
     if (selectedAddressId && typeof onSelectAddress === "function") {
@@ -71,7 +70,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
     fetchAddresses();
   }, []);
 
-  const selectedAddress = addresses.find(addr => addr._id === selectedAddressId);
+  const selectedAddress = addresses.find((addr) => addr._id === selectedAddressId);
 
   return (
     <div className="mb-5">
@@ -84,7 +83,7 @@ export default function AddressManager({ userId, onSelectAddress }) {
             value={selectedAddressId || ""}
             onChange={(e) => setSelectedAddressId(e.target.value)}
           >
-            <option value="" disabled>Select a saved address</option>
+            
             {addresses.map((addr) => (
               <option key={addr._id} value={addr._id}>
                 {addr.street}, {addr.city} ({addr.postalCode})

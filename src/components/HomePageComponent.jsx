@@ -131,7 +131,7 @@ const filteredCategories = categoryArray.filter((category) => {
   <div className="row gx-4 gy-4">
 
     <div className="col-md-6">
-      <Link to="/exclusive" className="text-decoration-none">
+      <Link to="/coming-soon" className="text-decoration-none">
         <div
           className="position-relative overflow-hidden rounded-4 shadow-lg"
           style={{
@@ -170,7 +170,7 @@ const filteredCategories = categoryArray.filter((category) => {
 
 
     <div className="col-md-6">
-      <Link to="/sale" className="text-decoration-none">
+      <Link to="/coming-soon" className="text-decoration-none">
         <div
           className="position-relative overflow-hidden rounded-4 shadow-lg"
           style={{
