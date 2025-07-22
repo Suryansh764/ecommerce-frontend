@@ -70,7 +70,7 @@ export default function Orders() {
                           </div>
                         </div>
                         <div className="fw-semibold text-end">
-                          ₹{(item.product?.price || 0) * item.quantity}
+                          ${(item.product?.price || 0) * item.quantity}
                         </div>
                       </div>
                     </Link>
@@ -86,7 +86,7 @@ export default function Orders() {
                       </div>
                     </div>
                     <h5 className="text-success fw-bold mb-0">
-                      ₹{order.totalAmount}
+                      ${order.totalAmount}
                     </h5>
                   </div>
                 </div>
